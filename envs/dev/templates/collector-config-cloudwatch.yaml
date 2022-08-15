@@ -397,4 +397,4 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: adot-collector
-    namespace: default
+    namespace: opentelemetry-operator-system
