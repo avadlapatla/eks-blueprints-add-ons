@@ -67,9 +67,6 @@ spec:
               - action: update_label
                 label: kubernetes_namespace
                 new_label: EKS_Namespace
-              - action: update_label
-                label: __meta_kubernetes_service_name
-                new_label: EKS_Component
                 
     exporters:
       #
@@ -91,7 +88,7 @@ spec:
         dimension_rollup_option: NoDimensionRollup
         parse_json_encoded_attr_values: [Sources, kubernetes]
         metric_declarations:
-          - dimensions: [[EKS_Cluster, EKS_Component]]
+          - dimensions: [[EKS_Cluster, service.name]]
             metric_name_selectors:
               - apiserver_request_total
               - apiserver_request_duration_seconds
