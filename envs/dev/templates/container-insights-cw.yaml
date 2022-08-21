@@ -79,7 +79,7 @@ spec:
       # Data from performance log events will be aggregated by CloudWatch using these dimensions to create a CloudWatch custom metric
       #    
       awsemf:
-        region: us-west-2
+        region: "us-west-2"
         namespace: ContainerInsights/Prometheus
         log_group_name: '/aws/containerinsights/${CLUSTER_NAME}/prometheus'
         resource_to_telemetry_conversion:
