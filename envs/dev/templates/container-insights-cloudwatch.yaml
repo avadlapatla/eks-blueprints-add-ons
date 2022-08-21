@@ -333,8 +333,7 @@ spec:
       #    
       awsemf:
         namespace: ContainerInsights
-        log_group_name: '/aws/containerinsights/{ClusterName}/performance'
-        log_stream_name: '{NodeName}'
+        log_group_name: '/aws/containerinsights/${ClusterName}/performance
         resource_to_telemetry_conversion:
           enabled: true
         dimension_rollup_option: NoDimensionRollup
