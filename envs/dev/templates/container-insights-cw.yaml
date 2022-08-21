@@ -66,7 +66,10 @@ spec:
                 new_label: EKS_PodName
               - action: update_label
                 label: kubernetes_namespace
-                new_label: EKS_Namespace               
+                new_label: EKS_Namespace
+              - action: update_label
+                label: service.name
+                new_label: EKS_Component
 
     exporters:
       #
@@ -90,12 +93,13 @@ spec:
         metric_declarations:
           - dimensions: [[EKS_Cluster, service.name]]
             metric_name_selectors:
-              - apiserver_request_.*
-              - apiserver_admission_controller_admission_.*
-              - rest_client_request_.*
-              - rest_client_requests_.*
-              - etcd_request_duration_.*
-              - etcd_db_total_size_.*
+              - apiserver_request_total
+              - apiserver_request_duration_seconds
+              - apiserver_admission_controller_admission_duration_seconds
+              - rest_client_request_duration_seconds
+              - rest_client_requests_total
+              - etcd_request_duration_seconds
+              - etcd_db_total_size_in_bytes
     service:
       pipelines:
         metrics:
