@@ -140,6 +140,8 @@ spec:
               - rest_client_requests_total
               - etcd_request_duration_seconds
               - etcd_db_total_size_in_bytes
+              - coredns_dns_request_duration_seconds_sum
+              - coredns_dns_response_rcode_count_total
     service:
       pipelines:
         metrics:
