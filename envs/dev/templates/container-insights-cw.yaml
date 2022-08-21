@@ -39,8 +39,12 @@ spec:
               regex: default;kubernetes;https
               source_labels:
               - __meta_kubernetes_namespace
-              - __meta_kubernetes_service_name
+              # - __meta_kubernetes_service_name
               - __meta_kubernetes_endpoint_port_name
+            - action: replace
+              source_labels:
+              - __meta_kubernetes_service_name
+              target_label: Component
             scheme: https
             tls_config:
               ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
@@ -67,10 +71,7 @@ spec:
               - action: update_label
                 label: kubernetes_namespace
                 new_label: EKS_Namespace
-              - action: update_label
-                label: kubernetes_service_name
-                new_label: EKS_Component
-
+                
     exporters:
       #
       # AWS EMF exporter that sends metrics data as performance log events to Amazon CloudWatch
@@ -91,7 +92,7 @@ spec:
         dimension_rollup_option: NoDimensionRollup
         parse_json_encoded_attr_values: [Sources, kubernetes]
         metric_declarations:
-          - dimensions: [[EKS_Cluster, EKS_Component]]
+          - dimensions: [[EKS_Cluster, Component]]
             metric_name_selectors:
               - apiserver_request_total
               - apiserver_request_duration_seconds
