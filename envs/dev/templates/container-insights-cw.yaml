@@ -68,7 +68,7 @@ spec:
                 label: kubernetes_namespace
                 new_label: EKS_Namespace
               - action: update_label
-                label: kubernetes_service_name
+                label: __meta_kubernetes_service_name
                 new_label: EKS_Component
                 
     exporters:
