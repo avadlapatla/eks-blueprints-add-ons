@@ -206,49 +206,99 @@ spec:
             - source_labels:
               - __meta_kubernetes_service_name
               target_label: kubernetes_name
-
-          - job_name: kubernetes-pods
+                        
+          - job_name: 'kubernetes-pods'
+            sample_limit: 10000
             kubernetes_sd_configs:
             - role: pod
             relabel_configs:
-            - action: keep
-              regex: true
-              source_labels:
-              - __meta_kubernetes_pod_annotation_prometheus_io_scrape
+            # Example relabel to scrape only endpoints that have
+            # "prometheus.io/scrape = true" annotation.
+            # - action: keep
+            #  regex: true
+            #  source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scrape]
+            # Example relabel to configure scrape scheme for all service scrape targets
+            # based on endpoints "prometheus.io/scrape_scheme = <scheme>" annotation.
+            # - action: replace
+            #  regex: (https?)
+            #  source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scheme]
+            #  target_label: __scheme__
+            # Example relabel to customize metric path based on endpoints
+            # "prometheus.io/path = <metric path>" annotation.
+            # - action: replace
+            #  regex: (.+)
+            #  source_labels: [__meta_kubernetes_service_annotation_prometheus_io_path]
+            #  target_label: __metrics_path__
+            # Example relabel to scrape only single, desired port for the service based
+            # on endpoints "prometheus.io/scrape_port = <port>" annotation.
+            # - action: labelmap
+            #  regex: __meta_kubernetes_pod_label_(.+)
             - action: replace
-              regex: (https?)
-              source_labels:
-              - __meta_kubernetes_pod_annotation_prometheus_io_scheme
-              target_label: __scheme__
+              source_labels: [__meta_kubernetes_namespace]
+              target_label: Namespace
             - action: replace
-              regex: (.+)
-              source_labels:
-              - __meta_kubernetes_pod_annotation_prometheus_io_path
-              target_label: __metrics_path__
+              source_labels: [__meta_kubernetes_pod_name]
+              target_label: pod_name
             - action: replace
-              regex: ([^:]+)(?::\d+)?;(\d+)
-              replacement: $$1:$$2
-              source_labels:
-              - __address__
-              - __meta_kubernetes_pod_annotation_prometheus_io_port
-              target_label: __address__
-            - action: labelmap
-              regex: __meta_kubernetes_pod_annotation_prometheus_io_param_(.+)
-              replacement: __param_$$1
-            - action: labelmap
-              regex: __meta_kubernetes_pod_label_(.+)
+              source_labels: [__meta_kubernetes_pod_container_name]
+              target_label: container_name
             - action: replace
-              source_labels:
-              - __meta_kubernetes_namespace
-              target_label: kubernetes_namespace
+              source_labels: [__meta_kubernetes_pod_controller_name]
+              target_label: pod_controller_name
             - action: replace
-              source_labels:
-              - __meta_kubernetes_pod_name
-              target_label: kubernetes_pod_name
+              source_labels: [__meta_kubernetes_pod_controller_kind]
+              target_label: pod_controller_kind
+            - action: replace
+              source_labels: [__meta_kubernetes_pod_phase]
+              target_label: pod_phase
+          
+            metric_relabel_configs:
             - action: drop
-              regex: Pending|Succeeded|Failed|Completed
-              source_labels:
-              - __meta_kubernetes_pod_phase
+              source_labels: [__name__]
+              regex: 'go_gc_duration_seconds.*'
+
+          # - job_name: kubernetes-pods
+          #   kubernetes_sd_configs:
+          #   - role: pod
+          #   relabel_configs:
+          #   - action: keep
+          #     regex: true
+          #     source_labels:
+          #     - __meta_kubernetes_pod_annotation_prometheus_io_scrape
+          #   - action: replace
+          #     regex: (https?)
+          #     source_labels:
+          #     - __meta_kubernetes_pod_annotation_prometheus_io_scheme
+          #     target_label: __scheme__
+          #   - action: replace
+          #     regex: (.+)
+          #     source_labels:
+          #     - __meta_kubernetes_pod_annotation_prometheus_io_path
+          #     target_label: __metrics_path__
+          #   - action: replace
+          #     regex: ([^:]+)(?::\d+)?;(\d+)
+          #     replacement: $$1:$$2
+          #     source_labels:
+          #     - __address__
+          #     - __meta_kubernetes_pod_annotation_prometheus_io_port
+          #     target_label: __address__
+          #   - action: labelmap
+          #     regex: __meta_kubernetes_pod_annotation_prometheus_io_param_(.+)
+          #     replacement: __param_$$1
+          #   - action: labelmap
+          #     regex: __meta_kubernetes_pod_label_(.+)
+          #   - action: replace
+          #     source_labels:
+          #     - __meta_kubernetes_namespace
+          #     target_label: kubernetes_namespace
+          #   - action: replace
+          #     source_labels:
+          #     - __meta_kubernetes_pod_name
+          #     target_label: kubernetes_pod_name
+          #   - action: drop
+          #     regex: Pending|Succeeded|Failed|Completed
+          #     source_labels:
+          #     - __meta_kubernetes_pod_phase
 
           - job_name: kubernetes-pods-slow
             scrape_interval: 5m
