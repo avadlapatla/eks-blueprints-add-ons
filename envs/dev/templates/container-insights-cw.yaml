@@ -91,7 +91,7 @@ spec:
         dimension_rollup_option: NoDimensionRollup
         parse_json_encoded_attr_values: [Sources, kubernetes]
         metric_declarations:
-          - dimensions: [[EKS_Cluster, service.name]]
+          - dimensions: [[EKS_Cluster, EKS_Component]]
             metric_name_selectors:
               - apiserver_request_total
               - apiserver_request_duration_seconds
