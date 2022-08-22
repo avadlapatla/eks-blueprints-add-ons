@@ -1,6 +1,10 @@
 aws-for-fluent-bit:
   serviceAccount:
     create: false
+    
+  firehose.enabled: false
+  kinesis.enabled: false
+  elasticsearch.enabled: false
 
   filter:
     extraFilters: |-
