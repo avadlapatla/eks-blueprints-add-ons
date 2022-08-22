@@ -11,8 +11,8 @@ aws-for-fluent-bit:
   elasticsearch:
   
   filter:
-    extraFilters:
-      Use_Kubelet: true
-      Kubelet_Port: 10250
+    extraFilters: |
+      Use_Kubelet true
+      Kubelet_Port 10250
     
   hostNetwork: true
