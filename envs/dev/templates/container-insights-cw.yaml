@@ -152,6 +152,8 @@ spec:
               - etcd_db_total_size_in_bytes
               - coredns_dns_request_duration_seconds_sum
               - coredns_dns_response_rcode_count_total
+              - awscni_assigned_ip_addresses
+              - awscni_total_ip_addresses
     service:
       pipelines:
         metrics:
