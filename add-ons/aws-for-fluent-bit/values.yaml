@@ -11,8 +11,16 @@ aws-for-fluent-bit:
   elasticsearch:
   
   filter:
+    match: "kube.*"
+    kubeURL: "https://kubernetes.default.svc.cluster.local:443"
+    mergeLog: "On"
+    mergeLogKey: "data"
+    keepLog: "On"
+    k8sLoggingParser: "On"
+    k8sLoggingExclude: "On"
+    bufferSize: "32k"
     extraFilters: |
-      Use_Kubelet = true
-      Kubelet_Port = 10250
+      Use_Kubelet true
+      Kubelet_Port 10250
     
   hostNetwork: true
