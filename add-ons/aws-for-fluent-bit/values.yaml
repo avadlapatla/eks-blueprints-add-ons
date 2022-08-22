@@ -9,3 +9,10 @@ aws-for-fluent-bit:
   kinesis:
 
   elasticsearch:
+  
+  filter:
+    extraFilters: |
+    Use_Kubelet: true
+    Kubelet_Port: 10250
+    
+  hostNetwork: true
