@@ -12,7 +12,7 @@ aws-for-fluent-bit:
   
   filter:
     extraFilters: |
-    Use_Kubelet: true
-    Kubelet_Port: 10250
+      Use_Kubelet: true
+      Kubelet_Port: 10250
     
   hostNetwork: true
