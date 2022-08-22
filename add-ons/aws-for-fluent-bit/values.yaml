@@ -2,14 +2,6 @@ aws-for-fluent-bit:
   serviceAccount:
     create: false
 
-  cloudWatch:
-
-  firehose:
-
-  kinesis:
-
-  elasticsearch:
-  
   filter:
     extraFilters: |-
       Use_Kubelet true
